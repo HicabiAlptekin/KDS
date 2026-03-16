@@ -1771,22 +1771,27 @@ elif sayfa == "🔬 ABI/IAD Analizi":
     ])
     st.dataframe(olcum_df, hide_index=True, use_container_width=True)
 
-    # ── Kaydet butonu ────────────────────────────────────────────
+# ── Kaydet butonu ────────────────────────────────────────────
     st.divider()
     not_txt = st.text_input("Oturum notu (opsiyonel)", placeholder="Ölçüm koşulları, gözlemler...")
+
     if st.button("📥 Kaydet"):
-    if st.session_state.kalan_hak > 0:
-        islem_yap() # Kendi orijinal kodlarınız burada çalışacak
-        hak_dusur()
-        st.success(f"İşlem başarılı! Kalan hakkınız: {st.session_state.kalan_hak}")
-    else:
-        st.error("⚠️ Günlük kullanım sınırınıza (3/3) ulaştınız. Yarın tekrar bekleriz."):
-        kds = tam_degerlendirme(h)
-        kayit = SaglikEgrisiMotoru.kayit_olustur(h, kds, abi, not_txt)
-        if h.hasta_id not in st.session_state.hasta_gecmis:
-            st.session_state.hasta_gecmis[h.hasta_id] = []
-        st.session_state.hasta_gecmis[h.hasta_id].append(kayit)
-        st.success(f"✅ Kayıt eklendi. Toplam {len(st.session_state.hasta_gecmis[h.hasta_id])} kayıt.")
+        if st.session_state.kalan_hak > 0:
+            # 1. Önce hesaplamaları yap
+            kds = tam_degerlendirme(h)
+            kayit = SaglikEgrisiMotoru.kayit_olustur(h, kds, abi, not_txt)
+            
+            # 2. Geçmişe kaydet
+            if h.hasta_id not in st.session_state.hasta_gecmis:
+                st.session_state.hasta_gecmis[h.hasta_id] = []
+            st.session_state.hasta_gecmis[h.hasta_id].append(kayit)
+            
+            # 3. İşlemi Firebase'e yansıt ve hakkı düşür
+            hak_dusur() 
+            
+            st.success(f"✅ İşlem başarılı! Kayıt eklendi. Kalan hakkınız: {st.session_state.kalan_hak}")
+        else:
+            st.error("⚠️ Günlük kullanım sınırınıza (3/3) ulaştınız. Yarın tekrar bekleriz.")
 
     st.divider()
     sozluk_goster("🔬 ABI/IAD Analizi")
