@@ -39,51 +39,25 @@ from streamlit.runtime.scriptrunner import get_script_run_ctx
 if "firebase_init" not in st.session_state:
     try:
         if not firebase_admin._apps:
-            cred = credentials.Certificate('key.json')
-            firebase_admin.initialize_app(cred)
+            # 1. Senaryo: Yerel çalışma (key.json varsa)
+            if Path('key.json').exists():
+                cred = credentials.Certificate('key.json')
+                firebase_admin.initialize_app(cred)
+            # 2. Senaryo: Streamlit Cloud (Secrets varsa)
+            elif "firebase" in st.secrets:
+                fb_dict = dict(st.secrets["firebase"])
+                # Private key içindeki \n karakterlerini Python'un anlayacağı hale getiriyoruz
+                fb_dict["private_key"] = fb_dict["private_key"].replace("\\n", "\n")
+                cred = credentials.Certificate(fb_dict)
+                firebase_admin.initialize_app(cred)
+            else:
+                raise ValueError("Firebase anahtarı ne dosya ne de Secret olarak bulunamadı!")
+        
         st.session_state.db = firestore.client()
     except Exception as e:
         st.session_state.db = None
-        st.error(f"⚠️ Firebase Bağlantı Hatası: 'key.json' dosyasını kontrol edin.")
+        st.error(f"⚠️ Firebase Bağlantı Hatası: {e}")
     st.session_state.firebase_init = True
-
-if "kalan_hak" not in st.session_state:
-    st.session_state.kalan_hak = 3
-    st.session_state.user_ref = None
-    
-    if st.session_state.db:
-        try:
-            stats_ref = st.session_state.db.collection('stats').document('global')
-            stats_ref.set({'total_visits': firestore.Increment(1)}, merge=True)
-            
-            ctx = get_script_run_ctx()
-            user_id = ctx.session_id if ctx else "default_web_user"
-            
-            today = datetime.now().strftime('%Y-%m-%d')
-            user_ref = st.session_state.db.collection('usage').document(user_id)
-            doc = user_ref.get()
-            
-            if doc.exists:
-                data = doc.to_dict()
-                if data.get('last_date') == today:
-                    st.session_state.kalan_hak = max(0, 3 - data.get('count', 0))
-                else:
-                    user_ref.set({'count': 0, 'last_date': today}, merge=True)
-                    st.session_state.kalan_hak = 3
-            else:
-                user_ref.set({'count': 0, 'last_date': today}, merge=True)
-                st.session_state.kalan_hak = 3
-                
-            st.session_state.user_ref = user_ref
-        except Exception as e:
-            pass 
-
-def hak_dusur():
-    if st.session_state.user_ref and st.session_state.kalan_hak > 0:
-        st.session_state.user_ref.update({'count': firestore.Increment(1)})
-        st.session_state.kalan_hak -= 1
-
-warnings.filterwarnings("ignore")
 
 # ══════════════════════════════════════════════════════════════════════════════
 # BÖLÜM 1 — VERİ MODELLERİ
@@ -1615,21 +1589,23 @@ with st.sidebar:
     gecmis = st.session_state.hasta_gecmis.get(h.hasta_id, [])
     st.caption(f"📁 {len(gecmis)} geçmiş kayıt")
 
-    st.markdown("**Navigasyon**")
-    sayfa = st.radio("Sayfa", [
-        "🏠 Genel Bakış",
-        "🔬 ABI/IAD Analizi",
-        "⚖️ Çapraz Karşılaştırma",
-        "🧬 Erken Teşhis Paneli",
-        "📈 Sağlık Eğrisi & Takip",
-        "💗 Life's Essential 8",
-        "🧬 Cinsiyet Riski",
-        "👥 Tüm Hastalar",
-        "➕ Yeni Hasta",
-    ], label_visibility="collapsed")
-        st.markdown("---")
-        st.subheader("📊 Kullanım Bilgileri")
-        st.metric("Günlük Kalan Hakkınız", f"{st.session_state.kalan_hak} / 3")
+   st.markdown("**Navigasyon**")
+sayfa = st.radio("Sayfa", [
+    "🏠 Genel Bakış",
+    "🔬 ABI/IAD Analizi",
+    "⚖️ Çapraz Karşılaştırma",
+    "🧬 Erken Teşhis Paneli",
+    "📈 Sağlık Eğrisi & Takip",
+    "💗 Life's Essential 8",
+    "🧬 Cinsiyet Riski",
+    "👥 Tüm Hastalar",
+    "➕ Yeni Hasta",
+], label_visibility="collapsed")
+
+# Bu satırlar yukarıdaki 'sayfa =' ile aynı hizada olmalı:
+st.markdown("---")
+st.subheader("📊 Kullanım Bilgileri")
+st.metric("Günlük Kalan Hakkınız", f"{st.session_state.kalan_hak} / 3")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
