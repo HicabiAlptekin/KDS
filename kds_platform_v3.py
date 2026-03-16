@@ -33,9 +33,58 @@ from datetime import datetime, date
 from scipy import stats
 import firebase_admin
 from firebase_admin import credentials, firestore
-from streamlit.runtime.scriptrunner import get_script_run_ctx
 
-# --- FIREBASE BAĞLANTISI VE KOTA YÖNETİMİ ---
+# ══════════════════════════════════════════════════════════════════════════════
+# SAYFA AYARLARI — Streamlit kuralı: set_page_config EN İLK st.* çağrısı olmalı
+# ══════════════════════════════════════════════════════════════════════════════
+st.set_page_config(page_title="KDS Platformu v3", page_icon="❤️",
+                   layout="wide", initial_sidebar_state="expanded")
+
+# ══════════════════════════════════════════════════════════════════════════════
+# FIREBASE BAĞLANTISI VE KOTA YÖNETİMİ
+# ══════════════════════════════════════════════════════════════════════════════
+
+def _bugun_str() -> str:
+    """Bugünün tarihini YYYY-MM-DD formatında döndürür (kota anahtarı için)."""
+    return datetime.now().strftime("%Y-%m-%d")
+
+def _kota_doc_id() -> str:
+    """Firestore'daki günlük kota doküman ID'si: session_id + tarih."""
+    try:
+        ctx = st._get_script_run_ctx()
+        sid = ctx.session_id if ctx else "local"
+    except Exception:
+        sid = "local"
+    return f"{sid}_{_bugun_str()}"
+
+def _kota_yukle() -> int:
+    """Firebase'den bugünkü kalan hakkı yükler. Bağlantı yoksa 3 döner."""
+    db = st.session_state.get("db")
+    if db is None:
+        return 3
+    try:
+        doc = db.collection("kota").document(_kota_doc_id()).get()
+        if doc.exists:
+            return int(doc.to_dict().get("kalan", 3))
+        return 3
+    except Exception:
+        return 3
+
+def hak_dusur():
+    """Kullanım hakkını 1 azaltır ve Firebase'e yazar."""
+    if st.session_state.kalan_hak > 0:
+        st.session_state.kalan_hak -= 1
+    db = st.session_state.get("db")
+    if db is None:
+        return
+    try:
+        db.collection("kota").document(_kota_doc_id()).set(
+            {"kalan": st.session_state.kalan_hak, "tarih": _bugun_str()},
+            merge=True
+        )
+    except Exception:
+        pass  # Firebase yazma başarısız olsa bile uygulama çalışmaya devam eder
+
 if "firebase_init" not in st.session_state:
     try:
         if not firebase_admin._apps:
@@ -46,17 +95,15 @@ if "firebase_init" not in st.session_state:
             # 2. Senaryo: Streamlit Cloud (Secrets varsa)
             elif "firebase" in st.secrets:
                 fb_dict = dict(st.secrets["firebase"])
-                # Private key içindeki \n karakterlerini Python'un anlayacağı hale getiriyoruz
                 fb_dict["private_key"] = fb_dict["private_key"].replace("\\n", "\n")
                 cred = credentials.Certificate(fb_dict)
                 firebase_admin.initialize_app(cred)
             else:
                 raise ValueError("Firebase anahtarı ne dosya ne de Secret olarak bulunamadı!")
-        
         st.session_state.db = firestore.client()
     except Exception as e:
         st.session_state.db = None
-        st.error(f"⚠️ Firebase Bağlantı Hatası: {e}")
+        st.warning(f"⚠️ Firebase bağlanamadı (demo modu aktif): {e}")
     st.session_state.firebase_init = True
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -1163,11 +1210,8 @@ def _demo_gecmis(hasta_id: str) -> List[TestKaydi]:
 
 
 # ══════════════════════════════════════════════════════════════════════════════
-# BÖLÜM 7 — STREAMLIT SAYFA AYARLARI
 # ══════════════════════════════════════════════════════════════════════════════
 
-st.set_page_config(page_title="KDS Platformu v3", page_icon="❤️",
-                   layout="wide", initial_sidebar_state="expanded")
 
 st.markdown("""
 <style>
@@ -1541,12 +1585,14 @@ if "hasta_gecmis" not in st.session_state:
         for h in st.session_state.hastalar
     }
 
+# Gunluk kullanim hakki — Firebase'den yukle ya da varsayilan 3 kullan
+if "kalan_hak" not in st.session_state:
+    st.session_state.kalan_hak = _kota_yukle()
+if st.session_state.get("_kota_gun") != _bugun_str():
+    st.session_state.kalan_hak = _kota_yukle()
+    st.session_state._kota_gun = _bugun_str()
 
-# ══════════════════════════════════════════════════════════════════════════════
-# SIDEBAR
-# ══════════════════════════════════════════════════════════════════════════════
 
-# ══════════════════════════════════════════════════════════════════════════════
 # SIDEBAR
 # ══════════════════════════════════════════════════════════════════════════════
 
@@ -1589,18 +1635,17 @@ with st.sidebar:
     gecmis = st.session_state.hasta_gecmis.get(h.hasta_id, [])
     st.caption(f"📁 {len(gecmis)} geçmiş kayıt")
 
-    with st.sidebar:
-        st.markdown("**Navigasyon**")
-        sayfa = st.radio("Sayfa", [
-               "🏠 Genel Bakış",
-               "🔬 ABI/IAD Analizi",
-               "⚖️ Çapraz Karşılaştırma",
-               "🧬 Erken Teşhis Paneli",
-               "📈 Sağlık Eğrisi & Takip",
-               "💗 Life's Essential 8",
-               "🧬 Cinsiyet Riski",
-               "👥 Tüm Hastalar",
-               "➕ Yeni Hasta",
+    st.markdown("**Navigasyon**")
+    sayfa = st.radio("Sayfa", [
+           "🏠 Genel Bakış",
+           "🔬 ABI/IAD Analizi",
+           "⚖️ Çapraz Karşılaştırma",
+           "🧬 Erken Teşhis Paneli",
+           "📈 Sağlık Eğrisi & Takip",
+           "💗 Life's Essential 8",
+           "🧬 Cinsiyet Riski",
+           "👥 Tüm Hastalar",
+           "➕ Yeni Hasta",
     ], label_visibility="collapsed")
 
     # Alttaki üç satır tam olarak 'sayfa =' ile aynı dikey hizada olmalı
