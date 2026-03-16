@@ -1,0 +1,17 @@
+# Temel Arayüz ve Sunucu
+streamlit
+
+# Veri Analizi ve Matematiksel İşlemler
+pandas
+numpy
+scipy
+scikit-learn
+
+# Görselleştirme ve Grafikler
+plotly
+
+# Firebase Entegrasyonu (Yeni)
+firebase-admin
+
+# Yardımcı Araçlar
+tabulate

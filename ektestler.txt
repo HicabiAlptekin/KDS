@@ -1,0 +1,23 @@
+Kalp damar hastalığı riskini belirlemede sadece açlık kan şekeri (AKŞ) testi bazen yetersiz kalabilir; çünkü AKŞ, vücudun şeker metabolizmasındaki uzun vadeli bozulmaları veya gizli riskleri her zaman erkenden göstermez. Kalp sağlığı açısından kritik öneme sahip olan ve açlık şekerinden ziyade ölçülmesi önerilen temel değerler şunlardır: [1, 2] 
+
+* HbA1c (Glikozillenmiş Hemoglobin): Son 2-3 aylık ortalama kan şekeri seviyesini gösterir. Çalışmalar, HbA1c düzeyinin kalp damar hastalığı ve ölüm riskiyle, tek başına açlık şekerinden daha güçlü bir ilişkiye sahip olduğunu göstermektedir.
+* HOMA-IR (İnsülin Direnci): Açlık kan şekeri ve açlık insülini kullanılarak hesaplanan bu değer, vücudun insülini ne kadar etkili kullandığını ölçer. Yüksek HOMA-IR seviyeleri, şeker seviyeleri henüz "normal" aralıktayken bile damar sertliği (ateroskleroz) ve kalp hastalığı riskinin arttığını önceden haber verebilir.
+* hs-CRP (Yüksek Duyarlılıklı C-Reaktif Protein): Damarlardaki düşük dereceli inflamasyonu (iltihabı) ölçer. Yüksek hs-CRP seviyeleri, kolesterol seviyeleri normal olsa bile kalp krizi ve inme riskinin bir göstergesi olabilir.
+* Lipoprotein (a) [Lp(a)]: Genetik olarak belirlenen bu protein türü, kandaki seviyesi yüksek olduğunda damar tıkanıklığı ve kalp hastalığı riskini bağımsız bir faktör olarak artırır.
+* Tokluk Kan Şekeri (2. Saat): Bazı durumlarda açlık şekeri normal çıksa bile yemekten sonraki şeker yükselmeleri (postprandial hiperglisemi) damar hasarı için daha büyük bir risk oluşturabilir. [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12] 
+
+Bu testlerin dışında, doktorunuz risk durumunuza göre [Memorial Sağlık Grubu](https://www.memorial.com.tr/tani-ve-testler/hdl-testi-nedir) rehberliğinde HDL/LDL kolesterol oranları veya [Mayo Clinic](https://www.mayoclinic.org/diseases-conditions/heart-disease/in-depth/heart-disease/art-20049357) tarafından önerilen diğer kardiyak belirteçleri de isteyebilir.
+Bu değerlerden hangisinin sizin için daha kritik olduğunu öğrenmek için bir kardiyoloji uzmanına danışmak ister misiniz?
+
+[1] [https://pmc.ncbi.nlm.nih.gov](https://pmc.ncbi.nlm.nih.gov/articles/PMC3632159/#:~:text=The%20measurement%20of%20A1C%20equals%20the%20assessment,than%20FPG%20and/or%202%2Dh%20OGTT%20plasma%20glucose.)
+[2] [https://www.ncbi.nlm.nih.gov](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC3150090/)
+[3] [https://www.mdcalc.com](https://www.mdcalc.com/calc/3120/homa-ir-homeostatic-model-assessment-insulin-resistance)
+[4] [https://diabetesjournals.org](https://diabetesjournals.org/care/article/36/11/3759/37934/HbA1c-and-the-Risks-for-All-Cause-and)
+[5] [https://journals.plos.org](https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0052036)
+[6] [https://pmc.ncbi.nlm.nih.gov](https://pmc.ncbi.nlm.nih.gov/articles/PMC3532497/)
+[7] [https://academic.oup.com](https://academic.oup.com/eurjpc/article/31/Supplement_1/zwae175.320/7692705)
+[8] [https://www.mayoclinic.org](https://www.mayoclinic.org/diseases-conditions/heart-disease/in-depth/heart-disease/art-20049357#:~:text=High%2Dsensitivity%20CRP%20%28hs%2DCRP%29%20tests%20help%20show%20the,can%20cause%20CRP%20levels%20to%20rise%20briefly.)
+[9] [https://blog.acibademlab.com](https://blog.acibademlab.com/tr/PLAC-TEST-%28Lp-PLA2-Aktivitesi%29#:~:text=PLAC%20testi;%20kanda%20Lp%2DPLA2%20enzim%20aktivitesini%20%C3%B6l%C3%A7en,enzim%20LDL%27%20deki%20okside%20fosfolipidleri%20hidrolize%20eder.)
+[10] [https://www.apollohospitals.com](https://www.apollohospitals.com/tr/diagnostics-investigations/lpa-test#:~:text=LP%28a%29%20testi%2C%20kolunuzdaki%20bir%20damardan%20kan%20al%C4%B1nmas%C4%B1n%C4%B1,%C3%B6l%C3%A7mek%20i%C3%A7in%20analiz%20edildi%C4%9Fi%20bir%20laboratuvara%20g%C3%B6nderilir.)
+[11] [https://www.nature.com](https://www.nature.com/articles/s41598-017-14152-y)
+[12] [https://www.ncbi.nlm.nih.gov](https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4186853/)
