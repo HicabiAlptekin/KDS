@@ -1589,23 +1589,24 @@ with st.sidebar:
     gecmis = st.session_state.hasta_gecmis.get(h.hasta_id, [])
     st.caption(f"📁 {len(gecmis)} geçmiş kayıt")
 
-   st.markdown("**Navigasyon**")
-sayfa = st.radio("Sayfa", [
-    "🏠 Genel Bakış",
-    "🔬 ABI/IAD Analizi",
-    "⚖️ Çapraz Karşılaştırma",
-    "🧬 Erken Teşhis Paneli",
-    "📈 Sağlık Eğrisi & Takip",
-    "💗 Life's Essential 8",
-    "🧬 Cinsiyet Riski",
-    "👥 Tüm Hastalar",
-    "➕ Yeni Hasta",
-], label_visibility="collapsed")
+    with st.sidebar:
+    st.markdown("**Navigasyon**")
+    sayfa = st.radio("Sayfa", [
+        "🏠 Genel Bakış",
+        "🔬 ABI/IAD Analizi",
+        "⚖️ Çapraz Karşılaştırma",
+        "🧬 Erken Teşhis Paneli",
+        "📈 Sağlık Eğrisi & Takip",
+        "💗 Life's Essential 8",
+        "🧬 Cinsiyet Riski",
+        "👥 Tüm Hastalar",
+        "➕ Yeni Hasta",
+    ], label_visibility="collapsed")
 
-# Bu satırlar yukarıdaki 'sayfa =' ile aynı hizada olmalı:
-st.markdown("---")
-st.subheader("📊 Kullanım Bilgileri")
-st.metric("Günlük Kalan Hakkınız", f"{st.session_state.kalan_hak} / 3")
+    # Alttaki üç satır tam olarak 'sayfa =' ile aynı dikey hizada olmalı
+    st.markdown("---")
+    st.subheader("📊 Kullanım Bilgileri")
+    st.metric("Günlük Kalan Hakkınız", f"{st.session_state.kalan_hak} / 3")
 
 
 # ══════════════════════════════════════════════════════════════════════════════

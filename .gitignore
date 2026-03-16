@@ -1,1 +1,12 @@
-﻿key.json
+﻿# Firebase anahtarı (Zaten eklemiştik)
+key.json
+
+# Diğer gereksiz metin ve yedek dosyaları
+*.txt
+*.md
+!README.md
+!requirements.txt
+
+# Eski veya yedek kod dosyaları
+kds_platform_v4.py
+kds_abi_engine.py
