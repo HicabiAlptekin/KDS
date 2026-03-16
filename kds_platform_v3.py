@@ -1627,9 +1627,9 @@ with st.sidebar:
         "👥 Tüm Hastalar",
         "➕ Yeni Hasta",
     ], label_visibility="collapsed")
-     st.markdown("---")
-     st.subheader("📊 Kullanım Bilgileri")
-     st.metric("Günlük Kalan Hakkınız", f"{st.session_state.kalan_hak} / 3")
+        st.markdown("---")
+        st.subheader("📊 Kullanım Bilgileri")
+        st.metric("Günlük Kalan Hakkınız", f"{st.session_state.kalan_hak} / 3")
 
 
 # ══════════════════════════════════════════════════════════════════════════════
