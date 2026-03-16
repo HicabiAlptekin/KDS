@@ -1590,17 +1590,17 @@ with st.sidebar:
     st.caption(f"📁 {len(gecmis)} geçmiş kayıt")
 
     with st.sidebar:
-    st.markdown("**Navigasyon**")
-    sayfa = st.radio("Sayfa", [
-        "🏠 Genel Bakış",
-        "🔬 ABI/IAD Analizi",
-        "⚖️ Çapraz Karşılaştırma",
-        "🧬 Erken Teşhis Paneli",
-        "📈 Sağlık Eğrisi & Takip",
-        "💗 Life's Essential 8",
-        "🧬 Cinsiyet Riski",
-        "👥 Tüm Hastalar",
-        "➕ Yeni Hasta",
+        st.markdown("**Navigasyon**")
+        sayfa = st.radio("Sayfa", [
+               "🏠 Genel Bakış",
+               "🔬 ABI/IAD Analizi",
+               "⚖️ Çapraz Karşılaştırma",
+               "🧬 Erken Teşhis Paneli",
+               "📈 Sağlık Eğrisi & Takip",
+               "💗 Life's Essential 8",
+               "🧬 Cinsiyet Riski",
+               "👥 Tüm Hastalar",
+               "➕ Yeni Hasta",
     ], label_visibility="collapsed")
 
     # Alttaki üç satır tam olarak 'sayfa =' ile aynı dikey hizada olmalı
